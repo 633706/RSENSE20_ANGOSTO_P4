@@ -24,10 +24,18 @@ Commit x.
 También se muetra la hora del ordenador usado en el desarrollo.
 
 ![NTP time](./documentation/Punto2_TerminalCOM.png)
+
+### Comunicación por TCP.
+Commit x.
+
+Usando Socket Test se prepara un servidor y cliente en el mismo equipo comoo prueba de funcinanmiento.
+
+![Socket Test terminal](./documentation/Punto3_Socketest.png)
 ---
 ## Bibliografía:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
 * [Espressif API reference](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/index.html).
+* [Sockect test](http://sockettest.sourceforge.net/)
 ## Librerías de terceros:
 * [ESP32 ping library](https://github.com/marian-craciunescu/ESP32Ping)
     * Usa el protocolo a nivel de red ICMP.
