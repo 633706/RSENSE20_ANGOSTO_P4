@@ -1,0 +1,60 @@
+<!DOCTYPE html []>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="MarkdownViewer++" />
+    <title>README.md</title>
+    <style type="text/css">
+            
+/* Avoid page breaks inside the most common attributes, especially for exports (i.e. PDF) */
+td, h1, h2, h3, h4, h5, p, ul, ol, li {
+    page-break-inside: avoid; 
+}
+
+        </style>
+  </head>
+  <body>
+    <h1 id="rsense20_angosto_p4">RSENSE20_ANGOSTO_P4</h1>
+    <p>Desarrollado para la arduino IDE
+Repositorio para la práctica P4 de redes de sensores.</p>
+    <h2 id="programa-base">Programa base:</h2>
+    <p>Commit 0fd2ed84.</p>
+    <p>Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. PING a <a href="http://www.google.com">www.google.com</a> y envío de tiempo medio por puerto serie.</p>
+    <h3 id="montaje">Montaje</h3>
+    <p>
+      <img src="./documentation/ProgramaBase_FotoMontaje.png" alt="FotoMonaje" />
+    </p>
+    <h3 id="hiperterminal-con-datos-del-ping">Hiperterminal con datos del ping.</h3>
+    <p>
+      <img src="./documentation/ProgramaBase_TerminalCOM.png" alt="Ping" />
+    </p>
+    <h2 id="punto-2">Punto 2:</h2>
+    <p>Commit 0fd2ed84.
+Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. A través de servidor NTP se obtiene la hora y se envía cada segundo por puerto serie.</p>
+    <h3 id="hiperterminal-con-datos-del-ntp">Hiperterminal con datos del NTP.</h3>
+    <p>Commit x.</p>
+    <p>También se muetra la hora del ordenador usado en el desarrollo.</p>
+    <h2 id="ntp-time">
+      <img src="./documentation/Punto2_TerminalCOM.png" alt="NTP time" />
+    </h2>
+    <h2 id="bibliografia">Bibliografía:</h2>
+    <ul>
+      <li>
+        <a href="https://github.com/espressif/arduino-esp32">Arduino core for the ESP32</a>
+      </li>
+      <li>
+        <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/index.html">Espressif API reference</a>.</li>
+    </ul>
+    <h2 id="librerias-de-terceros">Librerías de terceros:</h2>
+    <ul>
+      <li>
+        <a href="https://github.com/marian-craciunescu/ESP32Ping">ESP32 ping library</a>
+        <ul>
+          <li>Usa el protocolo a nivel de red ICMP.</li>
+        </ul>
+      </li>
+    </ul>
+    <hr />
+    <p>David Angosto Latorre, 633706</p>
+  </body>
+</html>

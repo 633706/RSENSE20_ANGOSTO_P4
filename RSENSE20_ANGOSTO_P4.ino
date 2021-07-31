@@ -1,10 +1,15 @@
 //RSENSE20_ANGOSTO_P4
 
 #include <WiFi.h>
-#include <ESP32Ping.h>
+#include "time.h"
 
 const char* ssid     = "RSENSE20_ANGOSTO_P4";
 const char* password = "12345678";
+
+const char* ntpServer = "pool.ntp.org";
+const long  UTC_timezoneOFsset_sec = 3600;
+const int   dayLightOffset = 3600;
+struct tm timeinfo;
 
 void setup()
 {
@@ -28,14 +33,12 @@ void setup()
   Serial.print("\r\nConectado a la red con IP:\t");
   Serial.println(WiFi.localIP());
 
-  if (Ping.ping("www.google.com", 10)) {
-    Serial.print("Ping OK, tiempo medio:\t");
-    Serial.print(Ping.averageTime());
-    Serial.print(" ms");
-  } else
-    Serial.println("Ping NOK");
-
+  configTime(UTC_timezoneOFsset_sec, dayLightOffset, ntpServer);
 }
 void loop() {
-
+  if (getLocalTime(&timeinfo))
+    Serial.println(&timeinfo, " %H:%M:%S");
+  else
+    Serial.println("Fallo al conseguir la hora");
+  delay(1000);
 }
