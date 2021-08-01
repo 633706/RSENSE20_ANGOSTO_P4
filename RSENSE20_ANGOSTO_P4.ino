@@ -15,6 +15,10 @@ const int   dayLightOffset = 3600;
 struct tm timeinfo;
 WiFiClient client;
 
+
+String cmdSTART, cmdSTOP;
+bool SendTime;
+
 void setup() {
   Serial.begin(115200);
   WiFi.begin(ssid, password);
@@ -42,17 +46,34 @@ void setup() {
     while (1);
   }
   Serial.println("Conexion correcta a TCP, NTP y red WiFi");
-
+  SendTime = true;
+  cmdSTART = String("start");
+  cmdSTOP = String("stop");
 }
 
 void loop() {
-  if (getLocalTime(&timeinfo)) {
-    Serial.println(&timeinfo, " %H:%M:%S");
-    client.println(&timeinfo, " %H:%M:%S");
+
+  if (client.available()) {
+    String cmd = client.readStringUntil('\r');
+    if (cmd.equals(cmdSTART)) {
+      SendTime = true;
+      Serial.println("Envio de hora reanudado");
+      client.println("Envio de hora reanudado");
+    } else if (cmd.equals(cmdSTOP)) {
+      SendTime = false;
+      Serial.println("Envio de hora parado");
+      client.println("Envio de hora parado");
+    }
   }
-  else {
-    Serial.println("Fallo al conseguir la hora");
-    client.println("Fallo al conseguir la hora");
+  if (SendTime) {
+    if (getLocalTime(&timeinfo) ) {
+      Serial.println(&timeinfo, " %H:%M:%S");
+      client.println(&timeinfo, " %H:%M:%S");
+    }
+    else {
+      Serial.println("Fallo al conseguir la hora");
+      client.println("Fallo al conseguir la hora");
+    }
   }
   delay(1000);
 }
