@@ -40,11 +40,25 @@ Commit x.
 Partiendo del commit 1a3486ad se implementan los comandos start y stop para el paro o reanudación del envío de mensajes.
 ### Hiperterminal y socketTest con datos del NTP y comandos.
 ![Socket Test SocketTests_COM](./documentation/Punto3_Socketest.png)
+
+## Punto 6:  Servidor Web que muestra la hora y  cuenta con botón de reinicar la hora.
+Commit x.
+
+Servidor web con visualización de la hora, es necesario refrescar la web para mantener el relo en hora, y cuenta con botón para setear en 00:00:00.
+Por pueto serie se manda la IP a usar para conectarte, y el sudominio web solicitado.
+### Página web e hiperteminal en diferentes momentos.
+![Root](./documentation/Punto6_HTML_root.png)
+![currentTime](./documentation/Punto6_HTML_CurrentTime.png)
+![ResetTime](./documentation/Punto6_resetTime.png)
+![currentTime2](./documentation/Punto6_HTML_CurrentTime2.png)
+
 ---
 ## Bibliografía:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
 * [Espressif API reference](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/index.html).
 * [Sockect test](http://sockettest.sourceforge.net/)
+* [Ejemplo servidor web](https://randomnerdtutorials.com/esp32-web-server-spiffs-spi-flash-file-system/)
+* [Instalación carga archivos para SPIFFS desde arduino IDE](https://randomnerdtutorials.com/install-esp32-filesystem-uploader-arduino-ide/)
 ## Librerías de terceros:
 * [ESP32 ping library](https://github.com/marian-craciunescu/ESP32Ping)
     * Usa el protocolo a nivel de red ICMP.

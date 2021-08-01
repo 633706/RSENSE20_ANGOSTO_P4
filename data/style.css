@@ -1,0 +1,25 @@
+html {
+  font-family: Courier New;
+  display: inline-block;
+  margin: 0px auto;
+  text-align: center;
+}
+h1{
+  color: #004578;
+  padding: 2vh;
+}
+p{
+  font-size: 1rem;
+}
+.button {
+  display: inline-block;
+  background-color: #71afe5;
+  border: none;
+  border-radius: 1px;
+  color: white;
+  padding: 16px 40px;
+  text-decoration: none;
+  font-size: 15px;
+  margin: 2px;
+  cursor: pointer;
+}
