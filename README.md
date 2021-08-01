@@ -14,23 +14,25 @@ Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. PI
 ![Ping](./documentation/ProgramaBase_TerminalCOM.png)
 
 ## Punto 2:
-Commit 0fd2ed84.
+Commit 75387348.
+
 Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. A través de servidor NTP se obtiene la hora y se envía cada segundo por puerto serie.
-
-
 ### Hiperterminal con datos del NTP.
-Commit x.
-
-También se muetra la hora del ordenador usado en el desarrollo.
-
 ![NTP time](./documentation/Punto2_TerminalCOM.png)
+
+### Comunicación por TCP.
+Commit e5fc11e8.
+
+Usando Socket Test se prepara un servidor y cliente en el mismo equipo comoo prueba de funcinanmiento.
+
+![Socket Test terminal](./documentation/Punto4_Socketest_COM.png)
 
 ### Comunicación por TCP.
 Commit x.
 
-Usando Socket Test se prepara un servidor y cliente en el mismo equipo comoo prueba de funcinanmiento.
+Usando Socket Test se prepara un servidor para envíar la hora cada segundo, también se envía por puerte serie..
 
-![Socket Test terminal](./documentation/Punto3_Socketest.png)
+![Socket Test SocketTests_COM](./documentation/Punto3_Socketest.png)
 ---
 ## Bibliografía:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)

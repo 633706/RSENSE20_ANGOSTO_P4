@@ -29,13 +29,23 @@ Repositorio para la práctica P4 de redes de sensores.</p>
       <img src="./documentation/ProgramaBase_TerminalCOM.png" alt="Ping" />
     </p>
     <h2 id="punto-2">Punto 2:</h2>
-    <p>Commit 0fd2ed84.
-Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. A través de servidor NTP se obtiene la hora y se envía cada segundo por puerto serie.</p>
+    <p>Commit 75387348.</p>
+    <p>Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. A través de servidor NTP se obtiene la hora y se envía cada segundo por puerto serie.</p>
     <h3 id="hiperterminal-con-datos-del-ntp">Hiperterminal con datos del NTP.</h3>
-    <p>Commit x.</p>
-    <p>También se muetra la hora del ordenador usado en el desarrollo.</p>
-    <h2 id="ntp-time">
+    <p>
       <img src="./documentation/Punto2_TerminalCOM.png" alt="NTP time" />
+    </p>
+    <h3 id="comunicacion-por-tcp">Comunicación por TCP.</h3>
+    <p>Commit e5fc11e8.</p>
+    <p>Usando Socket Test se prepara un servidor y cliente en el mismo equipo comoo prueba de funcinanmiento.</p>
+    <p>
+      <img src="./documentation/Punto4_Socketest_COM.png" alt="Socket Test terminal" />
+    </p>
+    <h3 id="comunicacion-por-tcp-1">Comunicación por TCP.</h3>
+    <p>Commit x.</p>
+    <p>Usando Socket Test se prepara un servidor para envíar la hora cada segundo, también se envía por puerte serie..</p>
+    <h2 id="socket-test-sockettests_com">
+      <img src="./documentation/Punto3_Socketest.png" alt="Socket Test SocketTests_COM" />
     </h2>
     <h2 id="bibliografia">Bibliografía:</h2>
     <ul>
@@ -44,6 +54,9 @@ Conexión a red Wifi RSESENSE20_ANGOSTO_P4, se envía por puerto serie la IP. A 
       </li>
       <li>
         <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/index.html">Espressif API reference</a>.</li>
+      <li>
+        <a href="http://sockettest.sourceforge.net/">Sockect test</a>
+      </li>
     </ul>
     <h2 id="librerias-de-terceros">Librerías de terceros:</h2>
     <ul>
