@@ -1,44 +1,45 @@
 //RSENSE20_ANGOSTO_P4
-#include <algorithm>
-#include <string>
-#include <iostream>
-#include <cctype>
+#include "AdafruitIO_WiFi.h"
 
-#include <WiFi.h>
-#include <time.h>
-#include <ESP32_FTPClient.h>
-#include <ArduinoJson.h>
+#define IO_USERNAME "Dangosto_RSENSE"
+#define IO_KEY "aio_ftRH63NpFa7JSDhswK90yS8c7vhN"
 
 const char* ssid     = "RSENSE20_ANGOSTO_P4";
-const char* passwordword = "12345678";
+const char* password = "12345678";
 
-const char* ntpServer = "pool.ntp.org";
-long UTC_timezoneOFsset_sec = 3600;
-const int dayLightOffset = 3600;
-struct tm timeinfo;
+#if defined(USE_AIRLIFT) || defined(ADAFRUIT_METRO_M4_AIRLIFT_LITE) ||         \
+    defined(ADAFRUIT_PYPORTAL)
+// Configure the pins used for the ESP32 connection
+#if !defined(SPIWIFI_SS) // if the wifi definition isnt in the board variant
+// Don't change the names of these #define's! they match the variant ones
+#define SPIWIFI SPI
+#define SPIWIFI_SS 10 // Chip select pin
+#define NINA_ACK 9    // a.k.a BUSY or READY pin
+#define NINA_RESETN 6 // Reset pin
+#define NINA_GPIO0 -1 // Not connected
+#endif
 
-char timeStamp[255];
-String timeStamp_string;
+AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, ssid, password, SPIWIFI_SS,
+                   NINA_ACK, NINA_RESETN, NINA_GPIO0, &SPIWIFI);
+#else
+AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, ssid, password);
+#endif
 
-char dateStamp[255];
-String dateStamp_string;
+AdafruitIO_Feed * temperatureFeed = io.feed("Temperature");
+AdafruitIO_Feed * HuidityFeed = io.feed("Humidity");
+AdafruitIO_Feed * ListenFeed = io.feed("RSENSE20_ANGOSTO_P4.8");
+int temperature;
+int humidity;
 
-char fileName[255];
-StaticJsonDocument<4000> JSON_docHandler;
-char JSON_docHandler_cstr[1023];
-
-float temperature;
-
-
-char server[255] = "192.168.43.32";
-char user[255] = "RSENSE20_ANGOSTO";
-char password[255] = "RSENSE20";
-ESP32_FTPClient ftp (server, user, password);
+void handleMQTT(AdafruitIO_Data *data) {
+  Serial.print("Recivido de RSENSE20_ANGOSTO_P4.8:\t");
+  Serial.println(data->value());
+}
 
 void setup() {
   Serial.begin(115200);
 
-  WiFi.begin(ssid, passwordword);
+  WiFi.begin(ssid, password);
   for  (int i = i = 0; i < 10; i++) {
     if ( WiFi.status() == WL_CONNECTED)
       break;
@@ -50,46 +51,24 @@ void setup() {
     while (1);
   }
 
-  configTime(UTC_timezoneOFsset_sec, dayLightOffset, ntpServer);
-
-  if (!getLocalTime(&timeinfo)) {
-    Serial.println("Fallo al conseguir la hora");
-    while (1);
+  io.connect();
+  ListenFeed->onMessage(handleMQTT);
+  
+  while (io.status() < AIO_CONNECTED)
+  {
+    Serial.println("Conectando MQTT");
+    delay(500);
   }
-  ftp.OpenConnection();
 
-  ftp.MakeDir("./tempeatureLog/");
-  ftp.ChangeWorkDir("./tempeatureLog/");
+  //handleMQTT->get();
+  
 }
 
 void loop() {
-
-  for (uint8_t i = 0; i < 30; i++) {
-    temperature = 25 + random(-5, 5) ;
-    JSON_docHandler["v"][i] = temperature;
-    getLocalTime(&timeinfo);
-    strftime(timeStamp, 255, "%T", &timeinfo);
-    timeStamp_string = String(timeStamp);
-    timeStamp_string.remove(timeStamp_string.indexOf(":"), 1);
-    timeStamp_string.remove(timeStamp_string.indexOf(":"), 1);
-    JSON_docHandler["t"][i] = timeStamp_string.toInt();
-  }
-
-    strftime(dateStamp, 255, "%F", &timeinfo);
-    dateStamp_string = String(dateStamp);
-    dateStamp_string.remove(dateStamp_string.indexOf("-"), 1);
-    dateStamp_string.remove(dateStamp_string.indexOf("-"), 1);
-
-  sprintf(fileName, "GRUPO_ANGOSTO_%s_%s.json", dateStamp_string.c_str(),timeStamp_string.c_str());
-
-  ftp.InitFile("Type A"); //A = ascii (creo que json usa ascii)
-  ftp.NewFile(fileName);
-  serializeJson(JSON_docHandler, JSON_docHandler_cstr);
-  delay(100);
-  ftp.Write(JSON_docHandler_cstr);
-  delay(100);
-  ftp.CloseFile();
-
-  delay(10000);
-
+  io.run();
+  temperature = 25 + random(-5, 5);
+  humidity = 50 + random(-10, 10);
+  temperatureFeed->save(temperature);
+  HuidityFeed->save(humidity);
+  delay(5000);
 }
