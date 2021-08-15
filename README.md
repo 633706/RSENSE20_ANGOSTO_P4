@@ -53,6 +53,19 @@ Por pueto serie se manda la IP a usar para conectarte, y el sudominio web solici
 ![ResetTime](./documentation/Punto6_resetTime.png)
 ![currentTime2](./documentation/Punto6_HTML_CurrentTime2.png)
 
+## Punto 7: Fichero JSON subido a servidor FTP.
+Commit afe24932.
+
+El servidor FTP se configura en Filezilla, para ello se escoge la IP 127.0.0.1 y el puerto 14147. Después es necesario dar de alta un nuevo usuario con el ID y contraseña que se configuren en el programa de Arduino. Además se escoge el directorio de la práctica como directorio raíz, y se habilitan todos los permisos relacionados con la gestión de archivos.
+
+### Captura de la configuración de FileZilla.
+![ConfiguraciónFileZilla](./documentation/Punto7_FileZilla.png)
+### Captura de archivos generados y contenido de uno de ellos.
+![ConfiguraciónFileZilla](./documentation/Punto7_Archivos.png)
+
+```json
+{"v":[23,27,22,25,20,26,28,26,25,26,24,23,22,29,27,21,20,28,26,22,22,21,27,28,21,25,24,24,21,23],"t":[131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452]}
+```
 ---
 ## Bibliografía:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
