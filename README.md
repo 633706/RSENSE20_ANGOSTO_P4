@@ -35,16 +35,17 @@ Usando Socket Test se prepara un servidor para envíar la hora cada segundo, tam
 ![Socket Test SocketTests_COM](./documentation/Punto4_Socketest_COM.png)
 
 ## Punto 5:  Comunicación bidirecctional por TCP con ESP32.
-Commit x.
+Commit c3c892cc.
 
 Partiendo del commit 1a3486ad se implementan los comandos start y stop para el paro o reanudación del envío de mensajes.
 ### Hiperterminal y socketTest con datos del NTP y comandos.
 ![Socket Test SocketTests_COM](./documentation/Punto3_Socketest.png)
 
 ## Punto 6:  Servidor Web que muestra la hora y  cuenta con botón de reinicar la hora.
-Commit x.
+Commit b25d6b32.
 
 Servidor web con visualización de la hora, es necesario refrescar la web para mantener el relo en hora, y cuenta con botón para setear en 00:00:00.
+
 Por pueto serie se manda la IP a usar para conectarte, y el sudominio web solicitado.
 ### Página web e hiperteminal en diferentes momentos.
 ![Root](./documentation/Punto6_HTML_root.png)

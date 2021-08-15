@@ -1,70 +1,44 @@
 //RSENSE20_ANGOSTO_P4
+#include <algorithm>
+#include <string>
+#include <iostream>
+#include <cctype>
 
 #include <WiFi.h>
-#include "ESPAsyncWebServer.h"
-#include <SPIFFS.h>
 #include <time.h>
+#include <ESP32_FTPClient.h>
+#include <ArduinoJson.h>
 
 const char* ssid     = "RSENSE20_ANGOSTO_P4";
-const char* password = "12345678";
-
-const uint16_t TCPport = 455;
-const char * TCPhost = "192.168.43.32";
+const char* passwordword = "12345678";
 
 const char* ntpServer = "pool.ntp.org";
-long  UTC_timezoneOFsset_sec = 3600;
-const int   dayLightOffset = 3600;
-
+long UTC_timezoneOFsset_sec = 3600;
+const int dayLightOffset = 3600;
 struct tm timeinfo;
-int Hour, Minute, Second;
-int Hour0 = 0, Minute0 = 0, Second0 = 0;
-String TimeWeb;
-char tempTimeWeb[255];
-bool resetTime = false;
-AsyncWebServer server(80);
+
+char timeStamp[255];
+String timeStamp_string;
+
+char dateStamp[255];
+String dateStamp_string;
+
+char fileName[255];
+StaticJsonDocument<4000> JSON_docHandler;
+char JSON_docHandler_cstr[1023];
+
+float temperature;
 
 
-String WebHandler(const String& placeholder) {
-  if (placeholder == "STATE") {
-    getLocalTime(&timeinfo);
-
-    if (resetTime) {
-      Hour0 = timeinfo.tm_hour;
-      Minute0 = timeinfo.tm_min;
-      Second0 = timeinfo.tm_sec;
-    }
-
-    Hour = timeinfo.tm_hour - Hour0;
-    Minute = timeinfo.tm_min - Minute0;
-    Second = timeinfo.tm_sec - Second0;
-
-
-    if (Second < 0) {
-      Second = Second + 60;
-      --Minute;
-    }//check overflow para segundos
-    if (Minute < 0) {
-      Minute = Minute + 60;
-      --Hour;
-    }//check overflow para minutos
-    if (Hour < 0) Hour = Hour + 24; //check overflow para horas, no  implementa compensación al solo dar la hora.
-    sprintf(tempTimeWeb, "%02d:%02d:%02d", Hour, Minute, Second);
-    TimeWeb = String(tempTimeWeb);
-    return TimeWeb;
-  }
-  return String();
-}
-
+char server[255] = "192.168.43.32";
+char user[255] = "RSENSE20_ANGOSTO";
+char password[255] = "RSENSE20";
+ESP32_FTPClient ftp (server, user, password);
 
 void setup() {
   Serial.begin(115200);
 
-  if (!SPIFFS.begin(true)) {
-    Serial.println("Error al montar el sistema de archivos");
-    while (1);
-  }
-
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid, passwordword);
   for  (int i = i = 0; i < 10; i++) {
     if ( WiFi.status() == WL_CONNECTED)
       break;
@@ -82,38 +56,40 @@ void setup() {
     Serial.println("Fallo al conseguir la hora");
     while (1);
   }
+  ftp.OpenConnection();
 
-  Serial.println("Conexion correcta a NTP y red WiFi");
-
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/index.html", String(), false, WebHandler);
-    resetTime = false;
-    Serial.println("root");
-  });
-
-  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/style.css", "text/css");
-    Serial.println("css file");
-  });
-
-
-  server.on("/resetTime", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/index.html", String(), false, WebHandler);
-    resetTime = true;
-    Serial.println("resetTime");
-  });
-
-  server.on("/currentTime", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/index.html", String(), false, WebHandler);
-    resetTime = false;
-    Serial.println("css file");
-  });
-
-  server.begin();
-
-  Serial.print("Server configurado, para leer la hora ve a:\t");
-  Serial.println(WiFi.localIP());
+  ftp.MakeDir("./tempeatureLog/");
+  ftp.ChangeWorkDir("./tempeatureLog/");
 }
 
 void loop() {
+
+  for (uint8_t i = 0; i < 30; i++) {
+    temperature = 25 + random(-5, 5) ;
+    JSON_docHandler["v"][i] = temperature;
+    getLocalTime(&timeinfo);
+    strftime(timeStamp, 255, "%T", &timeinfo);
+    timeStamp_string = String(timeStamp);
+    timeStamp_string.remove(timeStamp_string.indexOf(":"), 1);
+    timeStamp_string.remove(timeStamp_string.indexOf(":"), 1);
+    JSON_docHandler["t"][i] = timeStamp_string.toInt();
+  }
+
+    strftime(dateStamp, 255, "%F", &timeinfo);
+    dateStamp_string = String(dateStamp);
+    dateStamp_string.remove(dateStamp_string.indexOf("-"), 1);
+    dateStamp_string.remove(dateStamp_string.indexOf("-"), 1);
+
+  sprintf(fileName, "GRUPO_ANGOSTO_%s_%s.json", dateStamp_string.c_str(),timeStamp_string.c_str());
+
+  ftp.InitFile("Type A"); //A = ascii (creo que json usa ascii)
+  ftp.NewFile(fileName);
+  serializeJson(JSON_docHandler, JSON_docHandler_cstr);
+  delay(100);
+  ftp.Write(JSON_docHandler_cstr);
+  delay(100);
+  ftp.CloseFile();
+
+  delay(10000);
+
 }
