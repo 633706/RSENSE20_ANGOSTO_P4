@@ -66,6 +66,18 @@ El servidor FTP se configura en Filezilla, para ello se escoge la IP 127.0.0.1 y
 ```json
 {"v":[23,27,22,25,20,26,28,26,25,26,24,23,22,29,27,21,20,28,26,22,22,21,27,28,21,25,24,24,21,23],"t":[131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452,131452]}
 ```
+## Punto 8: Sube datos a la nube, en concreto al servicio gratuito proporcionado por Adafruit.  .
+Commit 86389190.
+
+Haciendo uso del servicio gratuito de Adafruit y las librerías que proporciona se publica por MQTT datos de temperatura y húmedad inventados además de suscribirse a un canal. De este último solo se envía por puerto serie los datos recibidos.
+
+### Captura del servicio de Adafruit y los mensajes recibidos.
+![ConfiguraciónFileZilla](./documentation/Punto8_MQTTtoESP32.png)
+### Captura del servicio de Adafruit y los datos publicados.
+![ConfiguraciónFileZilla](./documentation/Punto8_MQTTtoServer.png)
+
+
+
 ---
 ## Bibliografía:
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
@@ -73,8 +85,13 @@ El servidor FTP se configura en Filezilla, para ello se escoge la IP 127.0.0.1 y
 * [Sockect test](http://sockettest.sourceforge.net/)
 * [Ejemplo servidor web](https://randomnerdtutorials.com/esp32-web-server-spiffs-spi-flash-file-system/)
 * [Instalación carga archivos para SPIFFS desde arduino IDE](https://randomnerdtutorials.com/install-esp32-filesystem-uploader-arduino-ide/)
+* [Protocolo de mensajes de control de Internet ](https://www.ibm.com/docs/es/aix/7.2?topic=protocols-internet-control-message-protocol)
 ## Librerías de terceros:
 * [ESP32 ping library](https://github.com/marian-craciunescu/ESP32Ping)
     * Usa el protocolo a nivel de red ICMP.
+* [ESP32_FTPClient library](https://github.com/ldab/ESP32_FTPClient)
+* [ESPAsyncWebServer library](https://github.com/me-no-dev/ESPAsyncWebServer)
+* [arduino-esp32fs-plugin library](https://github.com/me-no-dev/arduino-esp32fs-plugin/releases/tag/1.0)
+* [ArduinoJson library](https://github.com/bblanchon/ArduinoJson)
 ---
 David Angosto Latorre, 633706
